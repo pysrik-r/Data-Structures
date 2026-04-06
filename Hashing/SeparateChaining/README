@@ -1,0 +1,345 @@
+Here’s a **professional, clean, and future-proof README.md** for your exact implementation. You can copy this directly into your GitHub repo.
+
+---
+
+# 📦 Generic Hash Table (Separate Chaining) in C#
+
+## 🧠 Overview
+
+This project implements a **generic hash table** using **separate chaining** for collision resolution.
+
+It supports:
+
+* ✅ Add (Insert)
+* 🔍 Get (Retrieve value by key)
+* 🔄 Update (Modify value)
+* ❌ Remove (Delete key)
+* 🔎 ContainsKey (Check existence)
+* 🔄 Dynamic resizing (rehashing)
+
+This implementation closely mirrors the design principles of
+Dictionary<TKey, TValue>, but is simplified for learning and understanding.
+
+---
+
+# 🔑 Core Concept
+
+A hash table maps a **key → value** using a **hash function**:
+
+```text
+index = hash(key) % table_size
+```
+
+When multiple keys map to the same index (**collision**), we use:
+
+> ✅ **Separate Chaining** → store multiple entries in a list at that index
+
+---
+
+# ⚙️ Internal Data Structure
+
+```csharp
+List<KeyValuePair<TKey, TValue>>[] table;
+```
+
+* The table is an **array of buckets**
+* Each bucket is a **List of key-value pairs**
+
+---
+
+## 📦 Bucket Representation
+
+```text
+Index 0 → [A:1] → [B:2]
+Index 1 → empty
+Index 2 → [C:3]
+```
+
+---
+
+# 🔄 Operations
+
+---
+
+## ✅ Add (Insert)
+
+```csharp
+Add(TKey key, TValue value)
+```
+
+### Behavior:
+
+* Computes index using hash
+* Inserts key-value pair into bucket
+* Throws exception if key already exists
+
+### Complexity:
+
+* **Average:** O(1)
+* **Worst:** O(n) (if all keys collide)
+
+---
+
+## 🔍 Get
+
+```csharp
+Get(TKey key)
+```
+
+### Behavior:
+
+* Finds key in corresponding bucket
+* Returns associated value
+* Throws exception if key not found
+
+### Complexity:
+
+* **Average:** O(1)
+* **Worst:** O(n)
+
+---
+
+## 🔄 Update
+
+```csharp
+Update(TKey key, TValue newValue)
+```
+
+### Behavior:
+
+* Searches for key
+* Updates value in-place
+
+---
+
+## ❌ Remove
+
+```csharp
+Remove(TKey key)
+```
+
+### Behavior:
+
+* Removes key-value pair if found
+* Returns `true` if removed, else `false`
+
+---
+
+## 🔎 ContainsKey
+
+```csharp
+ContainsKey(TKey key)
+```
+
+### Behavior:
+
+* Checks if key exists in table
+
+---
+
+# 🔄 Resizing (Rehashing)
+
+---
+
+## 📌 When does resizing occur?
+
+```text
+Load Factor (α) = count / size
+```
+
+Resize is triggered when:
+
+```text
+α ≥ loadFactor (threshold)
+```
+
+---
+
+## 📌 What happens during resize?
+
+1. Table size is doubled
+2. A new array is created
+3. All existing elements are rehashed
+4. Elements are redistributed into new buckets
+
+---
+
+## ⏱️ Complexity of Resize
+
+```text
+O(n)
+```
+
+* All elements must be reinserted
+
+---
+
+## 🧠 Important Insight
+
+> Resizing is expensive but rare → ensures overall O(1) performance (amortized)
+
+---
+
+# 📊 Complexity Summary
+
+| Operation   | Average Case | Worst Case |
+| ----------- | ------------ | ---------- |
+| Add         | O(1)         | O(n)       |
+| Get         | O(1)         | O(n)       |
+| Update      | O(1)         | O(n)       |
+| Remove      | O(1)         | O(n)       |
+| ContainsKey | O(1)         | O(n)       |
+
+---
+
+# 📦 Space Complexity
+
+```text
+O(n)
+```
+
+* Array + all stored elements
+
+---
+
+# ⚖️ Load Factor
+
+## 📌 Definition
+
+```text
+α = number of elements / table size
+```
+
+---
+
+## 📌 Role
+
+* Controls resizing
+* Balances memory vs performance
+
+---
+
+## 📌 Example
+
+| Size | Elements | Load Factor |
+| ---- | -------- | ----------- |
+| 10   | 7        | 0.7         |
+
+👉 If threshold = 0.7 → resize triggered
+
+---
+
+# 🧠 Deep Engineering Insights
+
+---
+
+## 🔥 1. Why collisions happen
+
+Because:
+
+> Different keys can produce the same hash index
+
+---
+
+## 🔥 2. Why separate chaining works
+
+* Keeps all colliding elements together
+* Avoids probing complexity
+* Allows flexible bucket size
+
+---
+
+## 🔥 3. Why we use `Equals()`
+
+```csharp
+kv.Key.Equals(key)
+```
+
+Because:
+
+> Same hash ≠ same key
+
+---
+
+## 🔥 4. Why rehashing is required
+
+When table size changes:
+
+* Old indices become invalid
+* Keys must be redistributed
+
+---
+
+## 🔥 5. Why resizing impacts performance
+
+* Resize = O(n)
+* Happens rarely
+* Overall performance remains O(1) (amortized)
+
+---
+
+# ⚖️ Advantages
+
+* Simple and intuitive
+* Easy deletion
+* Works well with higher load factors
+* Flexible bucket size
+
+---
+
+# ❌ Disadvantages
+
+* Extra memory overhead (lists)
+* Poor cache locality
+* Worst-case performance O(n)
+
+---
+
+# 🧪 Example
+
+```text
+Insert:
+(10, "A")
+(15, "B")
+(20, "C")
+
+Size = 5
+
+All map to index 0
+
+0 → [10:A] → [15:B] → [20:C]
+```
+
+---
+
+# 🚀 Possible Improvements
+
+* Use `LinkedList<T>` instead of `List<T>`
+* Implement custom hash functions
+* Add thread-safety (locks or concurrent structure)
+* Track collision metrics
+* Optimize resizing strategy
+
+---
+
+# 🎯 Final Takeaway
+
+> Hash tables achieve near constant-time performance not by avoiding collisions, but by **handling them efficiently and maintaining balance through resizing**.
+
+---
+
+# 🧠 Personal Learning Note (Optional but powerful)
+
+> This implementation helped me understand:
+
+* How hashing distributes data
+* Why collisions are unavoidable
+* How load factor affects performance
+* Why resizing is essential for maintaining efficiency
+
+---
+
+If you want next level:
+
+* I can help you implement **open addressing with delete (hard topic)**
+* Or build a **mini version of .NET Dictionary internals (very advanced & interview gold)**
