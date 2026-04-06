@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 
-class SeparateChaining<TKey, TValue>
+class HashTable<TKey, TValue>
 {
     private List<KeyValuePair<TKey, TValue>>[] table;
     private int size;
     private int count;
     private double loadFactor;
 
-    public SeparateChaining(int size, double loadFactor)
+    public HashTable(int size, double loadFactor)
     {
         this.size = size;
         this.loadFactor = loadFactor;
