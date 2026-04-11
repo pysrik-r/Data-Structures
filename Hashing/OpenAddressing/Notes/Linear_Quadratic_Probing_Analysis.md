@@ -13,8 +13,8 @@ From an algorithmic perspective, locating an index follows these rigorous proced
 ### Algorithm Steps
 
 1. **Initial Hash Calculation**: Determine the "zeroth" position using the base hash of the key: 
-   $$i_0 = \text{Hash}(key) \pmod N$$
-   where $N$ is the table size.
+   i_0 = {Hash}(key) mod N
+   where N is the table size.
 
 2. **Occupancy Evaluation**: Check if $T[i_0]$ is null. If it is empty, the operation (insertion or search) terminates at this index.
 
